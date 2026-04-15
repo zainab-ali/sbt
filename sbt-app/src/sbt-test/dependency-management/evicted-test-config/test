@@ -1,0 +1,4 @@
+> set update / evictionWarningOptions := EvictionWarningOptions.full.withConfigurations(Vector(Compile, Test))
+-> update
+> set evictionWarningOptions := EvictionWarningOptions.full.withConfigurations(Vector(Compile))
+> update

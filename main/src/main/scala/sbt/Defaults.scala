@@ -2966,7 +2966,8 @@ object Classpaths {
     Defaults.globalDefaults(
       Seq(
         conflictWarning :== ConflictWarning.default("global"),
-        evictionWarningOptions := EvictionWarningOptions.default,
+        evictionWarningOptions := EvictionWarningOptions.full
+          .withConfigurations(Vector(Compile, Test)),
         compatibilityWarningOptions :== CompatibilityWarningOptions.default,
         homepage :== None,
         startYear :== None,
@@ -3332,8 +3333,6 @@ object Classpaths {
       ConflictWarning(conflictWarning.value, report, log)
       report
     },
-    update / evictionWarningOptions := evictionWarningOptions.value,
-    evicted / evictionWarningOptions := EvictionWarningOptions.full,
     evicted := {
       import ShowLines._
       val report = (updateTask.tag(Tags.Update, Tags.Network)).value
@@ -3829,6 +3828,7 @@ object Classpaths {
       force = shouldForce,
       depsUpdated = transitiveUpdate.value.exists(!_.stats.cached),
       uwConfig = (update / unresolvedWarningConfiguration).value,
+      evictionWarningOptions = evictionWarningOptions.value,
       evictionLevel = evictionErrorLevel.value,
       versionSchemeOverrides = libraryDependencySchemes.value,
       assumedEvictionErrorLevel = assumedEvictionErrorLevel.value,

@@ -39,6 +39,7 @@ private[sbt] object LibraryManagement {
       force: Boolean,
       depsUpdated: Boolean,
       uwConfig: UnresolvedWarningConfiguration,
+      evictionWarningOptions: EvictionWarningOptions,
       evictionLevel: Level.Value,
       versionSchemeOverrides: Seq[ModuleID],
       assumedEvictionErrorLevel: Level.Value,
@@ -74,7 +75,8 @@ private[sbt] object LibraryManagement {
         versionSchemeOverrides,
         assumedVersionScheme,
         assumedVersionSchemeJava,
-        assumedEvictionErrorLevel
+        assumedEvictionErrorLevel,
+        evictionWarningOptions
       )
       def extraLines = List(
         "",
@@ -301,6 +303,8 @@ private[sbt] object LibraryManagement {
           force = shouldForce,
           depsUpdated = transitiveUpdate.value.exists(!_.stats.cached),
           uwConfig = (update / unresolvedWarningConfiguration).value,
+          evictionWarningOptions = EvictionWarningOptions.full
+            .withConfigurations(Vector(Configurations.Compile, Configurations.Test)),
           evictionLevel = Level.Debug,
           versionSchemeOverrides = Nil,
           assumedEvictionErrorLevel = Level.Debug,
